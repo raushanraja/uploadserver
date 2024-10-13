@@ -1,0 +1,41 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
+    - name: Extract Version
+      id: get_version
+      run: |
+        version=$(cargo pkgid | cut -d# -f2 | cut -d: -f2)
+        echo "VERSION=$version" >> $GITHUB_ENV
+    - name: Create GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        gh release create
+        '${{ env.VERSION }}'
+        --repo '${{ github.repository }}'
+    - name: Upload artifact signatures to GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        gh release upload
+        '${{ env.VERSION }}' target/release/uploadserver
+        --repo '${{ github.repository }}'

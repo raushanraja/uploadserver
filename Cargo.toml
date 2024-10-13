@@ -1,0 +1,21 @@
+[package]
+name = "uploadserver"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-cors = "0.7.0"
+actix-multipart = "0.7.2"
+actix-web = { version = "4.9.0", features = ["secure-cookies"] }
+chrono = { version = "0.4.38", features = ["clock", "std", "serde"] }
+derive_more = { version = "1.0.0", features = ["full"] }
+dotenvy = "0.15.7"
+env_logger = "0.11.5"
+futures = "0.3.30"
+log = { version = "0.4.22", features = ["serde", "std", "kv_unstable"] }
+serde = { version = "1.0.210", features = ["derive", "serde_derive"] }
+serde_derive = "1.0.210"
+serde_json = "1.0.128"
+thiserror = "1.0.63"
+uuid = { version = "1.10.0", features = ["serde", "v4"] }
+warp = "0.3.7"
